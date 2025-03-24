@@ -3,34 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediSync - Healthcare Management Solution</title>
+    <title>MediSync - Modern Healthcare Management Solution</title>
     <style>
         /* CSS Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
         }
 
         :root {
-            --primary-blue: #2563eb;
-            --secondary-blue: #3b82f6;
-            --light-blue: #93c5fd;
-            --accent-violet: #7c3aed;
-            --gradient-blue: linear-gradient(135deg, #2563eb, #3b82f6);
-            --gradient-violet: linear-gradient(135deg, #3b82f6, #7c3aed);
-            --text-dark: #1e293b;
-            --text-light: #f8fafc;
+            --primary-blue: #031B88;
+            --secondary-blue: #6096FD;
+            --light-blue: #AAB6FB;
+            --accent-pink: #FB7B8E;
+            --light-pink: #FAA7B8;
+            --text-dark: #1a1a2e;
+            --text-light: #ffffff;
             --bg-white: #ffffff;
-            --bg-light: #f1f5f9;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --bg-light: #f8fafc;
+            --shadow: 0 10px 30px rgba(3, 27, 136, 0.1);
+            --gradient-blue: linear-gradient(135deg, #031B88, #6096FD);
+            --gradient-pink: linear-gradient(135deg, #FB7B8E, #FAA7B8);
+            --gradient-hero: linear-gradient(135deg, #031B88, #6096FD, #AAB6FB);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
 
         body {
             background-color: var(--bg-light);
             color: var(--text-dark);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* Container */
@@ -43,11 +73,19 @@
 
         /* Header and Navigation */
         header {
-            background-color: var(--bg-white);
-            box-shadow: var(--shadow);
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(3, 27, 136, 0.1);
             position: fixed;
             width: 100%;
             z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 5px 0;
+            background-color: rgba(255, 255, 255, 0.98);
         }
 
         nav {
@@ -55,6 +93,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 0;
+            transition: all 0.3s ease;
         }
 
         .logo {
@@ -62,16 +101,24 @@
             align-items: center;
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--primary-blue);
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: all 0.3s ease;
         }
 
         .logo span {
-            color: var(--accent-violet);
+            background: linear-gradient(90deg, var(--accent-pink), var(--light-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .logo-icon {
             margin-right: 10px;
             font-size: 2rem;
+            color: var(--secondary-blue);
         }
 
         .nav-links {
@@ -81,6 +128,7 @@
 
         .nav-links li {
             margin-left: 30px;
+            position: relative;
         }
 
         .nav-links a {
@@ -88,15 +136,35 @@
             color: var(--text-dark);
             font-weight: 500;
             transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--gradient-blue);
+            transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: var(--primary-blue);
+            color: var(--secondary-blue);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .nav-links a.active {
-            color: var(--primary-blue);
+            color: var(--secondary-blue);
             font-weight: 600;
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
         }
 
         .mobile-menu-btn {
@@ -106,52 +174,69 @@
             cursor: pointer;
             font-size: 1.5rem;
             color: var(--text-dark);
+            transition: color 0.3s ease;
         }
 
         /* Hero Section */
         #hero {
-            background: var(--gradient-blue);
+            background: var(--gradient-hero);
             color: var(--text-light);
-            padding: 150px 0 100px;
+            padding: 180px 0 120px;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
 
-        #hero::before {
-            content: '';
+        .hero-blob {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('/api/placeholder/1200/600');
-            background-size: cover;
-            opacity: 0.1;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(251, 123, 142, 0.2), rgba(170, 182, 251, 0.1));
+            filter: blur(60px);
             z-index: 0;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero-blob-1 {
+            top: -200px;
+            right: -100px;
+        }
+
+        .hero-blob-2 {
+            bottom: -300px;
+            left: -200px;
+            animation-delay: 1s;
         }
 
         .hero-content {
             position: relative;
             z-index: 1;
+            animation: fadeIn 1s ease;
         }
 
         .hero-title {
-            font-size: 3rem;
-            font-weight: 700;
+            font-size: 3.5rem;
+            font-weight: 800;
             margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(90deg, #ffffff, #AAB6FB);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .hero-subtitle {
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto 40px;
+            opacity: 0.9;
         }
 
         /* Button Styles */
         .btn {
             display: inline-block;
-            padding: 12px 30px;
+            padding: 14px 32px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
@@ -159,191 +244,403 @@
             cursor: pointer;
             text-align: center;
             border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            transform: translateX(0);
         }
 
         .btn-primary {
-            background: var(--gradient-violet);
+            background: var(--gradient-pink);
             color: var(--text-light);
-            box-shadow: 0 4px 14px rgba(60, 80, 235, 0.4);
+            box-shadow: 0 10px 20px rgba(251, 123, 142, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(60, 80, 235, 0.6);
+            box-shadow: 0 15px 25px rgba(251, 123, 142, 0.4);
         }
 
         .btn-secondary {
             background: transparent;
-            color: var(--primary-blue);
-            border: 2px solid var(--primary-blue);
+            color: var(--text-light);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 10px rgba(96, 150, 253, 0.2);
         }
 
         .btn-secondary:hover {
-            background: var(--primary-blue);
-            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(96, 150, 253, 0.3);
+        }
+
+        .btn-blue {
+            background: var(--gradient-blue);
+            color: var(--text-light);
+            box-shadow: 0 10px 20px rgba(3, 27, 136, 0.2);
+        }
+
+        .btn-blue:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(3, 27, 136, 0.3);
         }
 
         /* Features Section */
         #features {
-            padding: 100px 0;
+            padding: 120px 0;
             background-color: var(--bg-white);
+            position: relative;
+            overflow: hidden;
         }
 
         .section-title {
             text-align: center;
             font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 50px;
-            color: var(--primary-blue);
+            font-weight: 800;
+            margin-bottom: 60px;
+            background: var(--gradient-blue);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-pink);
+            border-radius: 10px;
         }
 
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            gap: 40px;
         }
 
         .feature-card {
             background-color: var(--bg-white);
-            border-radius: 15px;
-            padding: 30px;
+            border-radius: 20px;
+            padding: 40px 30px;
             box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(3, 27, 136, 0.03), rgba(96, 150, 253, 0.05));
+            z-index: -1;
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(3, 27, 136, 0.15);
         }
 
         .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary-blue);
-            margin-bottom: 20px;
+            font-size: 3rem;
+            margin-bottom: 25px;
+            background: var(--gradient-blue);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
         }
 
         .feature-title {
             font-size: 1.5rem;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .feature-text {
             color: #64748b;
+            font-size: 1.05rem;
         }
 
         /* Security Section */
         #security {
-            padding: 100px 0;
+            padding: 120px 0;
             background-color: var(--bg-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .security-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(3, 27, 136, 0.05), rgba(96, 150, 253, 0.03));
+            filter: blur(50px);
+            z-index: 0;
+        }
+
+        .security-blob-1 {
+            top: -200px;
+            right: -100px;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .security-blob-2 {
+            bottom: -200px;
+            left: -100px;
+            animation: float 12s ease-in-out infinite;
+            animation-delay: 2s;
         }
 
         .security-content {
             display: flex;
             align-items: center;
-            gap: 50px;
+            gap: 60px;
+            position: relative;
+            z-index: 1;
         }
 
         .security-image {
             flex: 1;
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            opacity: 0;
+        }
+
+        .security-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(3, 27, 136, 0.1), rgba(96, 150, 253, 0.2));
+            z-index: 1;
         }
 
         .security-image img {
             width: 100%;
             height: auto;
             display: block;
+            transition: all 0.5s ease;
+        }
+
+        .security-image:hover img {
+            transform: scale(1.05);
         }
 
         .security-text {
             flex: 1;
+            opacity: 0;
         }
 
         .security-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--primary-blue);
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            background: var(--gradient-blue);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .security-list {
             list-style: none;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .security-list li {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .security-list li:hover {
+            transform: translateX(5px);
         }
 
         .security-list li i {
-            color: var(--primary-blue);
-            margin-right: 10px;
+            color: var(--accent-pink);
+            margin-right: 15px;
             font-size: 1.2rem;
         }
 
         /* Pricing Section */
         #pricing {
-            padding: 100px 0;
+            padding: 120px 0;
             background-color: var(--bg-white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(251, 123, 142, 0.05), rgba(170, 182, 251, 0.03));
+            filter: blur(60px);
+            z-index: 0;
+        }
+
+        .pricing-blob-1 {
+            top: -300px;
+            left: -200px;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .pricing-blob-2 {
+            bottom: -200px;
+            right: -300px;
+            animation: float 12s ease-in-out infinite;
+            animation-delay: 3s;
         }
 
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            gap: 40px;
+            position: relative;
+            z-index: 1;
         }
 
         .pricing-card {
             background-color: var(--bg-white);
-            border-radius: 15px;
-            padding: 40px 30px;
+            border-radius: 20px;
+            padding: 50px 30px;
             box-shadow: var(--shadow);
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 1;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-blue), var(--secondary-blue));
+            transition: all 0.4s ease;
+            opacity: 0.7;
+            z-index: -1;
         }
 
         .pricing-card.featured {
-            border: 2px solid var(--primary-blue);
             transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(3, 27, 136, 0.15);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pricing-card.featured::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-pink));
+            z-index: -2;
+            border-radius: 22px;
         }
 
         .pricing-card.featured::before {
-            content: 'Most Popular';
+            width: 100%;
+            opacity: 0.05;
+        }
+
+        .pricing-card.featured .pricing-badge {
             position: absolute;
-            top: 15px;
-            right: -30px;
-            background: var(--gradient-violet);
+            top: 16px;
+            right: -32px;
+            background: var(--gradient-pink);
             color: var(--text-light);
             padding: 5px 40px;
             font-size: 0.8rem;
             font-weight: 600;
             transform: rotate(45deg);
+            box-shadow: 0 5px 10px rgba(251, 123, 142, 0.3);
         }
 
         .pricing-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(3, 27, 136, 0.2);
         }
 
         .pricing-card.featured:hover {
-            transform: scale(1.05) translateY(-10px);
+            transform: scale(1.05) translateY(-15px);
+        }
+
+        .pricing-card:hover::before {
+            width: 100%;
+            opacity: 0.05;
         }
 
         .pricing-title {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        .pricing-card.featured .pricing-title {
+            background: var(--gradient-blue);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .pricing-price {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-            margin-bottom: 20px;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            background: var(--gradient-blue);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
         }
 
         .pricing-price span {
@@ -354,89 +651,166 @@
 
         .pricing-features {
             list-style: none;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+            text-align: left;
+            padding-left: 20px;
         }
 
         .pricing-features li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             color: #64748b;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-blue);
+            font-weight: 700;
         }
 
         /* Contact Section */
         #contact {
-            padding: 100px 0;
+            padding: 120px 0;
             background: var(--gradient-blue);
             color: var(--text-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), rgba(170, 182, 251, 0.05));
+            filter: blur(50px);
+            z-index: 0;
+        }
+
+        .contact-blob-1 {
+            top: -200px;
+            right: -100px;
+            animation: float 12s ease-in-out infinite;
+        }
+
+        .contact-blob-2 {
+            bottom: -300px;
+            left: -200px;
+            animation: float 15s ease-in-out infinite;
+            animation-delay: 2s;
         }
 
         .contact-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 50px;
+            gap: 60px;
+            position: relative;
+            z-index: 1;
         }
 
         .contact-info {
             display: flex;
             flex-direction: column;
+            opacity: 0;
         }
 
         .contact-info-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: var(--text-light);
         }
 
         .contact-info-text {
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
 
         .contact-details {
             list-style: none;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         .contact-details li {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-details li:hover {
+            transform: translateX(5px);
         }
 
         .contact-details li i {
-            margin-right: 10px;
+            margin-right: 15px;
             font-size: 1.2rem;
+            color: var(--light-pink);
+        }
+
+        .contact-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .contact-social a {
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.1);
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .contact-social a:hover {
+            background: var(--accent-pink);
+            transform: translateY(-5px);
         }
 
         .contact-form {
             background-color: var(--bg-white);
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 40px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 20px 40px rgba(3, 27, 136, 0.2);
+            opacity: 0;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 600;
             color: var(--text-dark);
+            font-size: 0.95rem;
         }
 
         .form-input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(96, 150, 253, 0.2);
+            background-color: var(--bg-white);
         }
 
         .form-error {
@@ -448,22 +822,55 @@
 
         /* Footer */
         footer {
-            background-color: #0f172a;
+            background-color: #031B88;
             color: var(--text-light);
-            padding: 50px 0 20px;
+            padding: 80px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-blob {
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(96, 150, 253, 0.1), rgba(3, 27, 136, 0.05));
+            filter: blur(100px);
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .footer-blob-1 {
+            top: -400px;
+            right: -300px;
+        }
+
+        .footer-blob-2 {
+            bottom: -500px;
+            left: -300px;
         }
 
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
+            gap: 40px;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 1;
         }
 
         .footer-column h3 {
             font-size: 1.2rem;
-            font-weight: 600;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--light-blue);
+        }
+
+        .footer-column p {
+            color: rgba(255, 255, 255, 0.7);
             margin-bottom: 20px;
+            font-size: 0.95rem;
+            max-width: 300px;
         }
 
         .footer-links {
@@ -471,23 +878,40 @@
         }
 
         .footer-links li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .footer-links a {
-            color: #94a3b8;
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            position: relative;
+            padding-left: 0;
+        }
+
+        .footer-links a::before {
+            content: '›';
+            position: absolute;
+            left: -15px;
+            opacity: 0;
+            transition: all 0.3s ease;
         }
 
         .footer-links a:hover {
-            color: var(--light-blue);
+            color: var(--light-pink);
+            padding-left: 15px;
+        }
+
+        .footer-links a:hover::before {
+            opacity: 1;
+            left: 0;
         }
 
         .footer-social {
             display: flex;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .footer-social a {
@@ -503,34 +927,24 @@
         }
 
         .footer-social a:hover {
-            background: var(--primary-blue);
-            transform: translateY(-3px);
+            background: var(--accent-pink);
+            transform: translateY(-5px);
         }
 
         .footer-bottom {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
+            color: rgba(255, 255, 255, 0.6);
             font-size: 0.9rem;
-        }
-
-        /* Animation Classes */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .fade-in.appear {
-            opacity: 1;
-            transform: translateY(0);
+            position: relative;
+            z-index: 1;
         }
 
         /* Responsive Design */
         @media (max-width: 991px) {
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
             }
             
             .security-content {
@@ -542,7 +956,7 @@
             }
             
             .pricing-card.featured:hover {
-                transform: translateY(-10px);
+                transform: translateY(-15px);
             }
         }
 
@@ -553,11 +967,13 @@
                 left: -100%;
                 width: 100%;
                 height: calc(100vh - 80px);
-                background-color: var(--bg-white);
+                background-color: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
                 flex-direction: column;
                 align-items: center;
-                padding-top: 50px;
-                transition: left 0.3s ease;
+                padding: 50px 0;
+                transition: all 0.3s ease;
+                z-index: 999;
             }
             
             .nav-links.active {
@@ -573,7 +989,7 @@
             }
             
             .hero-title {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
         }
 
@@ -587,7 +1003,7 @@
             }
             
             #hero {
-                padding: 120px 0 80px;
+                padding: 150px 0 100px;
             }
             
             .contact-form {
@@ -599,7 +1015,7 @@
 </head>
 <body>
     <!-- Header & Navigation -->
-    <header>
+    <header id="header">
         <div class="container">
             <nav>
                 <a href="#" class="logo">
@@ -613,316 +1029,4 @@
                     <li><a href="#pricing">Pricing</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
-                <button class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section id="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Streamline Healthcare Management with MediSync</h1>
-                <p class="hero-subtitle">An intelligent, secure platform that simplifies patient data management, appointment scheduling, and electronic health records.</p>
-                <div class="hero-buttons">
-                    <a href="#" class="btn btn-primary">Schedule a Demo</a>
-                    <a href="#" class="btn btn-secondary">Learn More</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features">
-        <div class="container">
-            <h2 class="section-title fade-in">Powerful Features</h2>
-            <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <i class="fas fa-shield-alt feature-icon"></i>
-                    <h3 class="feature-title">HIPAA Compliant</h3>
-                    <p class="feature-text">Our platform is built from the ground up with security and compliance in mind, ensuring all patient data is protected according to HIPAA regulations.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <i class="fas fa-clock feature-icon"></i>
-                    <h3 class="feature-title">Real-time Access</h3>
-                    <p class="feature-text">Access patient information instantly from anywhere, enabling faster decision-making and improved care coordination between healthcare providers.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <i class="fas fa-calendar-alt feature-icon"></i>
-                    <h3 class="feature-title">Smart Scheduling</h3>
-                    <p class="feature-text">Efficiently manage appointments with our intelligent scheduling system that prevents conflicts and sends automated reminders to patients.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <i class="fas fa-file-medical-alt feature-icon"></i>
-                    <h3 class="feature-title">Comprehensive EHR</h3>
-                    <p class="feature-text">Create, store, and manage electronic health records with an intuitive interface designed specifically for healthcare professionals.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <i class="fas fa-chart-line feature-icon"></i>
-                    <h3 class="feature-title">Analytics Dashboard</h3>
-                    <p class="feature-text">Gain valuable insights into your practice with custom reports and analytics that help optimize operations and improve patient care.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <i class="fas fa-cogs feature-icon"></i>
-                    <h3 class="feature-title">Customizable Workflows</h3>
-                    <p class="feature-text">Tailor the platform to your specific needs with customizable templates, forms, and workflows that adapt to your practice.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Security Section -->
-    <section id="security">
-        <div class="container">
-            <div class="security-content">
-                <div class="security-image fade-in">
-                    <img src="/api/placeholder/600/400" alt="Security and Compliance">
-                </div>
-                <div class="security-text fade-in">
-                    <h2 class="security-title">Security & Compliance</h2>
-                    <p>At MediSync, we understand that data security is paramount in healthcare. Our platform is designed with multiple layers of protection to keep sensitive patient information safe.</p>
-                    <ul class="security-list">
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            <div>HIPAA compliant infrastructure with end-to-end encryption</div>
-                        </li>
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            <div>Regular security audits and vulnerability assessments</div>
-                        </li>
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            <div>Role-based access controls for granular permission management</div>
-                        </li>
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            <div>Automatic backup and disaster recovery procedures</div>
-                        </li>
-                        <li>
-                            <i class="fas fa-check-circle"></i>
-                            <div>Detailed audit logs for tracking all data access and modifications</div>
-                        </li>
-                    </ul>
-                    <a href="#" class="btn btn-primary">Learn More About Security</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing">
-        <div class="container">
-            <h2 class="section-title fade-in">Simple, Transparent Pricing</h2>
-            <div class="pricing-grid">
-                <div class="pricing-card fade-in">
-                    <h3 class="pricing-title">Basic</h3>
-                    <div class="pricing-price">$299<span>/month</span></div>
-                    <ul class="pricing-features">
-                        <li>Up to 5 healthcare providers</li>
-                        <li>Patient portal access</li>
-                        <li>Appointment scheduling</li>
-                        <li>Basic EHR functionality</li>
-                        <li>Email support</li>
-                    </ul>
-                    <a href="#" class="btn btn-secondary">Get Started</a>
-                </div>
-                <div class="pricing-card featured fade-in">
-                    <h3 class="pricing-title">Professional</h3>
-                    <div class="pricing-price">$599<span>/month</span></div>
-                    <ul class="pricing-features">
-                        <li>Up to 15 healthcare providers</li>
-                        <li>Advanced patient portal</li>
-                        <li>Smart scheduling system</li>
-                        <li>Complete EHR functionality</li>
-                        <li>Basic analytics and reporting</li>
-                        <li>Priority support</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary">Get Started</a>
-                </div>
-                <div class="pricing-card fade-in">
-                    <h3 class="pricing-title">Enterprise</h3>
-                    <div class="pricing-price">Custom<span> pricing</span></div>
-                    <ul class="pricing-features">
-                        <li>Unlimited healthcare providers</li>
-                        <li>Custom integrations</li>
-                        <li>Advanced analytics</li>
-                        <li>Dedicated account manager</li>
-                        <li>24/7 premium support</li>
-                        <li>On-site training</li>
-                    </ul>
-                    <a href="#" class="btn btn-secondary">Contact Sales</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="container">
-            <div class="contact-container">
-                <div class="contact-info fade-in">
-                    <h2 class="contact-info-title">Get in Touch</h2>
-                    <p class="contact-info-text">Have questions about MediSync? Our team is here to help. Contact us for more information or to schedule a personalized demo.</p>
-                    <ul class="contact-details">
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>123 Healthcare Avenue, Medical District, CA 92000</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            <span>+1 (800) 123-4567</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <span>info@medisync.com</span>
-                        </li>
-                    </ul>
-                    <div class="footer-social">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="contact-form fade-in">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" id="name" class="form-input" required>
-                            <div class="form-error" id="nameError">Please enter your name</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" id="email" class="form-input" required>
-                            <div class="form-error" id="emailError">Please enter a valid email address</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="organization" class="form-label">Organization</label>
-                            <input type="text" id="organization" class="form-input" required>
-                            <div class="form-error" id="organizationError">Please enter your organization name</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="message" class="form-label">Message</label>
-                            <textarea id="message" class="form-input" rows="5" required></textarea>
-                            <div class="form-error" id="messageError">Please enter your message</div>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>MediSync</h3>
-                    <p>Empowering healthcare providers with intelligent tools for better patient management and care.</p>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#security">Security</a></li>
-                        <li><a href="#pricing">Pricing</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Resources</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Knowledge Base</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Webinars</a></li>
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">API Reference</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Legal</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">HIPAA Compliance</a></li>
-                        <li><a href="#">Security Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 MediSync. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript -->
-    <script>
-        // Mobile Menu Toggle
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
-                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-        });
-
-        // Smooth Scrolling for Navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-
-                // Close mobile menu if open
-                if (navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                }
-            });
-        });
-
-        // Scroll Animations
-        const fadeElements = document.querySelectorAll('.fade-in');
-
-        const fadeInOnScroll = () => {
-            fadeElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150;
-                
-                if (elementTop < window.innerHeight - elementVisible) {
-                    element.classList.add('appear');
-                }
-            });
-        };
-
-        // Initial check on load
-        fadeInOnScroll();
-
-        // Check on scroll
-        window.addEventListener('scroll', fadeInOnScroll);
-
-        // Form Validation
-        const contactForm = document.getElementById('contactForm');
-        
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                let isValid = true;
-                
-                // Name validation
-                const name = document.getElementById('name');
-                const nameError = document.getElementById('nameError');
-                if (!name.value.trim()) {
-                    name
+                <button class="mobile-menu-
